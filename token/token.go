@@ -7,12 +7,14 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/emvi/hide"
 	"github.com/kiwisheets/auth"
+	"github.com/kiwisheets/auth/permission"
 	"github.com/kiwisheets/util"
 )
 
 type UserTokenParams struct {
-	ID    hide.ID
-	Email string
+	ID          hide.ID
+	Email       string
+	Permissions []permission.Permission
 }
 
 func validateTokenAndGetUserID(t string, cfg *util.JWTConfig) (hide.ID, error) {
@@ -30,10 +32,11 @@ func validateTokenAndGetUserID(t string, cfg *util.JWTConfig) (hide.ID, error) {
 	return 0, err
 }
 
-// buildAndSignToken signs and returned a JWT token from a User
-func buildAndSignToken(u UserTokenParams, cfg *util.JWTConfig, expires time.Duration) (string, error) {
+// BuildAndSignToken signs and returned a JWT token from a User
+func BuildAndSignToken(u UserTokenParams, cfg *util.JWTConfig, expires time.Duration) (string, error) {
 	claims := auth.UserClaim{
 		UserID: u.ID,
+		Scopes: u.Permissions,
 		StandardClaims: jwt.StandardClaims{
 			Issuer:   "KiwiSheets",
 			IssuedAt: time.Now().Unix(),
@@ -49,10 +52,6 @@ func buildAndSignToken(u UserTokenParams, cfg *util.JWTConfig, expires time.Dura
 	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
 	tokenString, err := token.SignedString(cfg.PrivateKey)
 	log.Println(tokenString)
-	log.Println(err)
-
-	userId, err := validateTokenAndGetUserID(tokenString, cfg)
-	log.Println(userId)
 	log.Println(err)
 
 	return tokenString, err
