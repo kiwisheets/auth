@@ -1,10 +1,10 @@
 package seed
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/kiwisheets/auth/operation"
 	"github.com/kiwisheets/auth/permission"
 	"github.com/kiwisheets/auth/subject"
+	"gorm.io/gorm"
 )
 
 func seedPermissions(db *gorm.DB) {
