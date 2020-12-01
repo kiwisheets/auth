@@ -14,7 +14,7 @@ import (
 type UserTokenParams struct {
 	ID          hide.ID
 	Email       string
-	Permissions []permission.Permission
+	Permissions []*permission.Permission
 }
 
 func validateTokenAndGetUserID(t string, cfg *util.JWTConfig) (hide.ID, error) {
