@@ -54,8 +54,9 @@ func BuildAndSignToken(u UserTokenParams, cfg *util.JWTConfig, expires time.Dura
 
 	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
 	tokenString, err := token.SignedString(cfg.PrivateKey)
-	log.Println(tokenString)
-	log.Println(err)
+	if err != nil {
+		log.Println(err)
+	}
 
 	return tokenString, err
 }
