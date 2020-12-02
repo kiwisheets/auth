@@ -8,14 +8,16 @@ import (
 
 // UserClaim structure
 type UserClaim struct {
-	UserID hide.ID                  `json:"userId"`
-	Scopes []*permission.Permission `json:"scopes"`
+	UserID    hide.ID                  `json:"userId"`
+	CompanyID hide.ID                  `json:"companyId"`
+	Scopes    []*permission.Permission `json:"scopes"`
 	jwt.StandardClaims
 }
 
 // Context structure, passed through context
 type Context struct {
-	UserID hide.ID
-	Scopes []*permission.Permission
-	Secure bool
+	UserID    hide.ID
+	CompanyID hide.ID
+	Scopes    []*permission.Permission
+	Secure    bool
 }

@@ -38,8 +38,9 @@ func Middleware() gin.HandlerFunc {
 		}
 
 		ctx := context.WithValue(c.Request.Context(), userCtxKey, Context{
-			UserID: userClaim.UserID,
-			Scopes: userClaim.Scopes,
+			UserID:    userClaim.UserID,
+			CompanyID: userClaim.CompanyID,
+			Scopes:    userClaim.Scopes,
 		})
 
 		c.Request = c.Request.WithContext(ctx)

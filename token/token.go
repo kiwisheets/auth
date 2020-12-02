@@ -13,11 +13,13 @@ import (
 
 type UserTokenParams struct {
 	ID          hide.ID
+	CompanyID   hide.ID
 	Email       string
 	Permissions []*permission.Permission
 }
 
-func validateTokenAndGetUserID(t string, cfg *util.JWTConfig) (hide.ID, error) {
+// ValidateTokenAndGetUserID verifies and returns the contents of a signed JWT
+func ValidateTokenAndGetUserID(t string, cfg *util.JWTConfig) (hide.ID, error) {
 	token, err := jwt.ParseWithClaims(t, &auth.UserClaim{}, func(token *jwt.Token) (interface{}, error) {
 		return cfg.PublicKey, nil
 	})
@@ -35,8 +37,9 @@ func validateTokenAndGetUserID(t string, cfg *util.JWTConfig) (hide.ID, error) {
 // BuildAndSignToken signs and returned a JWT token from a User
 func BuildAndSignToken(u UserTokenParams, cfg *util.JWTConfig, expires time.Duration) (string, error) {
 	claims := auth.UserClaim{
-		UserID: u.ID,
-		Scopes: u.Permissions,
+		UserID:    u.ID,
+		CompanyID: u.CompanyID,
+		Scopes:    u.Permissions,
 		StandardClaims: jwt.StandardClaims{
 			Issuer:   "KiwiSheets",
 			IssuedAt: time.Now().Unix(),
