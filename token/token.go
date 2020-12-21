@@ -1,6 +1,7 @@
 package token
 
 import (
+	"crypto/ecdsa"
 	"log"
 	"time"
 
@@ -8,7 +9,6 @@ import (
 	"github.com/emvi/hide"
 	"github.com/kiwisheets/auth"
 	"github.com/kiwisheets/auth/permission"
-	"github.com/kiwisheets/util"
 )
 
 type UserTokenParams struct {
@@ -19,9 +19,9 @@ type UserTokenParams struct {
 }
 
 // ValidateTokenAndGetUserID verifies and returns the contents of a signed JWT
-func ValidateTokenAndGetUserID(t string, cfg *util.JWTConfig) (hide.ID, error) {
+func ValidateTokenAndGetUserID(t string, publicKey *ecdsa.PublicKey) (hide.ID, error) {
 	token, err := jwt.ParseWithClaims(t, &auth.UserClaim{}, func(token *jwt.Token) (interface{}, error) {
-		return cfg.PublicKey, nil
+		return publicKey, nil
 	})
 
 	if err != nil {
@@ -35,7 +35,7 @@ func ValidateTokenAndGetUserID(t string, cfg *util.JWTConfig) (hide.ID, error) {
 }
 
 // BuildAndSignToken signs and returned a JWT token from a User
-func BuildAndSignToken(u UserTokenParams, cfg *util.JWTConfig, expires time.Duration) (string, error) {
+func BuildAndSignToken(u UserTokenParams, privateKey *ecdsa.PrivateKey, expires time.Duration) (string, error) {
 	claims := auth.UserClaim{
 		UserID:    u.ID,
 		CompanyID: u.CompanyID,
@@ -53,7 +53,7 @@ func BuildAndSignToken(u UserTokenParams, cfg *util.JWTConfig, expires time.Dura
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
-	tokenString, err := token.SignedString(cfg.PrivateKey)
+	tokenString, err := token.SignedString(privateKey)
 	if err != nil {
 		log.Println(err)
 	}
