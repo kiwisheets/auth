@@ -20,4 +20,6 @@ type Context struct {
 	CompanyID hide.ID
 	Scopes    []*permission.Permission
 	Secure    bool
+
+	OriginalHeader string
 }
