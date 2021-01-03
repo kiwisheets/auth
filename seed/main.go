@@ -58,13 +58,7 @@ func createOrGetBuiltInRole(db *gorm.DB, name string, description string, permis
 		Name: name,
 	}).Attrs(permission.BuiltinRole{
 		Description: description,
-		Permissions: []permission.Permission{
-			createOrGetPerm(db, subject.Me, operation.Any),
-			createOrGetPerm(db, subject.User, operation.Read),
-			createOrGetPerm(db, subject.Company, operation.Read),
-			createOrGetPerm(db, subject.Client, operation.Read),
-			createOrGetPerm(db, subject.UserContact, operation.Read),
-		},
+		Permissions: permissions,
 	}).FirstOrCreate(&perm).Error
 	if err != nil {
 		log.Println("failed to create built in role " + name)
