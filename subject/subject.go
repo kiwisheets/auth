@@ -21,6 +21,8 @@ Client
 ClientContact
 
 Contact
+
+Invoice
 )
 */
 type Subject int64

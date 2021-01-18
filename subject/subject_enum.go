@@ -31,9 +31,11 @@ const (
 	ClientContact
 	// Contact is a Subject of type Contact
 	Contact
+	// Invoice is a Subject of type Invoice
+	Invoice
 )
 
-const _SubjectName = "NoneAnyMeUserUserContactOtherUserCompanyOtherCompanyClientClientContactContact"
+const _SubjectName = "NoneAnyMeUserUserContactOtherUserCompanyOtherCompanyClientClientContactContactInvoice"
 
 var _SubjectNames = []string{
 	_SubjectName[0:4],
@@ -47,6 +49,7 @@ var _SubjectNames = []string{
 	_SubjectName[52:58],
 	_SubjectName[58:71],
 	_SubjectName[71:78],
+	_SubjectName[78:85],
 }
 
 // SubjectNames returns a list of possible string values of Subject.
@@ -68,6 +71,7 @@ var _SubjectMap = map[Subject]string{
 	8:  _SubjectName[52:58],
 	9:  _SubjectName[58:71],
 	10: _SubjectName[71:78],
+	11: _SubjectName[78:85],
 }
 
 // String implements the Stringer interface.
@@ -90,6 +94,7 @@ var _SubjectValue = map[string]Subject{
 	_SubjectName[52:58]: 8,
 	_SubjectName[58:71]: 9,
 	_SubjectName[71:78]: 10,
+	_SubjectName[78:85]: 11,
 }
 
 // ParseSubject attempts to convert a string to a Subject
